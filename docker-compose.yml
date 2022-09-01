@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  backend:
+    build: .
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    working_dir: /Users/mac/Projects/PantauHewan/api/app
+    volumes:
+      - ./app:/Users/mac/Projects/PantauHewan/api/app
+    ports:
+      - 8000:8000
+    restart: on-failure  
+    depends_on:
+      - db
+
+  db:
+    image: postgres:12
+    volumes:
+      - postgres_data:/Users/mac/Projects/PantauHewan/api/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgrespw
+      - POSTGRES_DB=pantau_hewan
+    expose: 
+      - 5432
+
+volumes:
+  postgres_data:
